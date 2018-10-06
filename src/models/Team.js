@@ -9,6 +9,7 @@ var teamSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	memberID3: String,
 	teamID: Number
 });
 

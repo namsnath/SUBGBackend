@@ -13,6 +13,13 @@ mongoose.connect("mongodb://localhost:27017/SUBG");
 const db = mongoose.connection;
 
 // Models
+const User = require(path.join(__dirname, 'models', 'User'));
+const Team = require(path.join(__dirname, 'models', 'Team'));
+const Reward = require(path.join(__dirname, 'models', 'Reward'));
+const TeamReward = require(path.join(__dirname, 'models', 'TeamReward'));
+const TeamTask = require(path.join(__dirname, 'models', 'TeamTask'));
+const Task = require(path.join(__dirname, 'models', 'Task'));
+const Code = require(path.join(__dirname, 'models', 'Code'));
 
 
 // Route Init
