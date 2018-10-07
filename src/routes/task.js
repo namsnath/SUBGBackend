@@ -20,40 +20,19 @@ const Task = require(path.join(__dirname, '..', 'models', 'Task'));
 const Code = require(path.join(__dirname, '..', 'models', 'Code'));
 
 
-router.get("/getNotRegistered", (req, res, next) => {
-	User.aggregate([
-    		{ $match: {registered: false} },
-    		{ $project: {gravitasID: 1, name: 1, _id: 0} },
-    		{ $sort: {gravitasID: 1} },
-    	], function(err, data) {
-    		if(err)
-    			res.send(err);
-    		res.send(data);
-    	});
-});
 
-router.get('/getAll', (req, res, next) => {
-    User.aggregate([
-            { $project: {gravitasID: 1, name: 1, _id: 0} },
-            { $sort: {gravitasID: 1} },
-        ], function(err, data) {
-            if(err)
-                res.send(err);
-            res.send(data);
-        });
-});
-
-router.post('/addUser', (req, res, next) => {
-    var params = req.body;
-    var user = new User(params);
-    user.save(function(err, results) {
+/*
+*	name
+*	type
+*	location
+*	description
+*/
+router.post('/addTask' async (req, res, next) => {
+	var params = req.body;
+	var task = new Task(params);
+    task.save(function(err, results) {
         console.log(results);
     });
-    /*
-    User.update(params, params, {upsert: true, new: true},
-        function(err, doc) {
-            console.log(doc);
-        });*/
 });
 
 module.exports = router;

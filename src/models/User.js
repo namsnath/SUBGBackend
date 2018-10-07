@@ -5,14 +5,17 @@ var userSchema = new mongoose.Schema({
 		type: String, 
 		required: true,
 	},
-	GravitasID: {
+	gravitasID: {
 		type: String, 
 		required: true,
 	},
 	reg_no: String,
 	email: String,
-	phno: String,
-	registered: Boolean
+	phone: String,
+	registered: {
+		type: Boolean,
+		default: false,
+	}
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -9,7 +9,7 @@ const app = express();
 const port = 3000;
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/SUBG");
+mongoose.connect("mongodb://localhost:27017/SUBG", { useNewUrlParser: true });
 const db = mongoose.connection;
 
 // Models
@@ -25,11 +25,13 @@ const Code = require(path.join(__dirname, 'models', 'Code'));
 // Route Init
 const user = require(path.join(__dirname, 'routes', 'user'));
 const team = require(path.join(__dirname, 'routes', 'team'));
+const task = require(path.join(__dirname, 'routes', 'task'));
 
 
 // Routes
 app.use('/user', user);
 app.use('/team', team);
+app.use('/task', task);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
