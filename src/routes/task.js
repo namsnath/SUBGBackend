@@ -23,8 +23,6 @@ const Code = require(path.join(__dirname, '..', 'models', 'Code'));
 
 function findTask(params) {
 	return new Promise((resolve, reject) => {
-		//var params = req.body;
-		//type, location, team
 		Task.aggregate([
 				{ $match: { 
 					ongoingTeams: { $nin: [params.teamID] },
@@ -54,14 +52,52 @@ function assignTask(params) {
 			console.log(data);
 			return resolve(params);
 		});
-		/*console.log(params);
-		Task.findOne({
-			type: params.reqTask[0].type,
-			location: params.reqTask[0].location,
-			name: params.reqTask[0].name,
-		}, function(err, data) {
-			console.log(data);
-		});*/
+	});
+}
+
+function getOngoing(params) {
+	return new Promise((resolve, reject) => {
+		Task.aggregate([
+			{ $match: { ongoingTeams: params.teamID } }
+		], function(err, data) {
+			if(err)
+				return reject(err);
+			return resolve(data);
+		});
+	});
+}
+
+function getCompleted(params) {
+	return new Promise((resolve, reject) => {
+		Task.aggregate([
+			{ $match: { completedTeams: params.teamID } }
+		], function(err, data) {
+			if(err)
+				return reject(err);
+			return resolve(data);
+		});
+	});
+}
+
+function completeTask(params) {
+	return new Promise((resolve, reject) => {
+		Task.updateOne(
+			{
+				type: params.type,
+				location: params.location,
+				name: params.name,
+				ongoingTeams: params.teamID,
+			},
+			{
+				$pull: { ongoingTeams: params.teamID },
+				$push: { completedTeams: params.teamID },
+			}, function(err, data) {
+				if(err)
+					return reject(err);
+				console.log(data);
+				return resolve(params);
+			}
+		);
 	});
 }
 
@@ -84,8 +120,11 @@ router.post('/assignTask', async (req, res, next) => {
 	var params = req.body;
 	
 	try {
-		var data = await findTask(params)
-		var data2 = await assignTask(data);
+		var data = await findTask(params);
+		if(data == [])
+			res.send('Task Not Available')
+		else
+			var data2 = await assignTask(data);
 		res.send(data2);
 	} catch(err) {
 		console.log(err);
@@ -93,5 +132,34 @@ router.post('/assignTask', async (req, res, next) => {
 });
 
 
-router.post('/getOngoing')
+router.post('/getOngoing', async (req, res, next) => {
+	var params = req.body;
+	try {
+		var data = await getOngoing(params);
+		res.send(data);
+	} catch(err) {
+		console.log(err);
+	}
+});
+
+router.post('/getCompleted', async (req, res, next) => {
+	var params = req.body;
+	try {
+		var data = await getCompleted(params);
+		res.send(data);
+	} catch(err) {
+		console.log(err);
+	}
+});
+
+router.post('/completeTask', async (req, res, next) => {
+	var params = req.body;
+	try {
+		await completeTask(params);
+		res.send(params);
+	} catch(err) {
+		console.log(err);
+	}
+});
+
 module.exports = router;

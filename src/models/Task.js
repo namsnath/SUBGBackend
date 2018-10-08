@@ -12,7 +12,7 @@ var taskSchema = new mongoose.Schema({
 	completedTeams: {
 		type: [String],
 		default: [],
-	}
+	} //For storing teams who have this task in completed
 });
 
 module.exports = mongoose.model("Task", taskSchema);
