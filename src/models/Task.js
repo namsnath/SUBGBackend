@@ -5,10 +5,14 @@ var taskSchema = new mongoose.Schema({
 	type: String,	//1, 2, 3
 	location: String,	//SJT, TT, SMV, GDN
 	description: String,
-	teams: {
+	ongoingTeams: {
 		type: [String],
 		default: [],
-	},	//For storing teams who have this task in ongoing/completed
+	},	//For storing teams who have this task in ongoing
+	completedTeams: {
+		type: [String],
+		default: [],
+	}
 });
 
 module.exports = mongoose.model("Task", taskSchema);

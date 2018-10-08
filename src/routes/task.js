@@ -27,7 +27,7 @@ function findTask(params) {
 		//type, location, team
 		Task.aggregate([
 				{ $match: { 
-					teams: { $nin: [params.teamID] },
+					ongoingTeams: { $nin: [params.teamID] },
 					type: params.type,
 					location: params.location, 
 				} },
@@ -47,7 +47,7 @@ function assignTask(params) {
 			type: params.reqTask.type,
 			location: params.reqTask.location,
 			name: params.reqTask.name,
-		}, { $push: { teams: params.teamID } }, 
+		}, { $push: { ongoingTeams: params.teamID } }, 
 		function(err, data) {
 			if(err)
 				return reject(err);
@@ -92,4 +92,6 @@ router.post('/assignTask', async (req, res, next) => {
 	}
 });
 
+
+router.post('/getOngoing')
 module.exports = router;
