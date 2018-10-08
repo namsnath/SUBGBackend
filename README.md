@@ -71,3 +71,28 @@ reqTask: {
 	description  
 	teams (array without the current team added)  
 }
+
+### POST /task/getOngoing:
+#### Request:
+teamID
+
+#### Response: 
+\_id  
+name  
+location  
+description  
+ongoingTeams (Array for the task)  
+completedTeams (Array for the task)  
+
+
+### POST /task/getCompleted:
+#### Request:
+teamID
+
+#### Response: 
+\_id  
+name  
+location  
+description  
+ongoingTeams (Array for the task)  
+completedTeams (Array for the task)  
