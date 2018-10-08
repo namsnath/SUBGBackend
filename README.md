@@ -49,3 +49,25 @@ gravitasID3 (optional)
 memberID1  
 memberID2  
 memberID3  
+
+## Task:
+
+### POST /task/assignTask:
+#### Request:
+name  
+type  
+location  
+teamID  
+
+#### Response: 
+teamID  
+type  
+location  
+reqTask: {  
+	\_id  
+	name  
+	type  
+	location  
+	description  
+	teams (array without the current team added)  
+}

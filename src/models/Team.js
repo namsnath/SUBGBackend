@@ -10,7 +10,7 @@ var teamSchema = new mongoose.Schema({
 		required: true
 	},
 	memberID3: String,
-	teamID: Number
+	teamID: String
 });
 
 module.exports = mongoose.model("Team", teamSchema);
