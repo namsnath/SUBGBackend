@@ -50,6 +50,9 @@ memberID1
 memberID2  
 memberID3  
 
+
+
+
 ## Task:
 
 ### POST /task/assignTask:
@@ -63,26 +66,31 @@ teamID
 teamID  
 type  
 location  
-reqTask: {  
+reqTask: [{  (Array of tasks that were assigned)  
 	\_id  
 	name  
 	type  
 	location  
 	description  
-	teams (array without the current team added)  
-}
+	ongoingTeams (array without the current team added)  
+	completedTeams (array without the current team added)  
+	points  
+}]
 
 ### POST /task/getOngoing:
 #### Request:
 teamID
 
 #### Response: 
+[{  
 \_id  
 name  
+type  
 location  
 description  
 ongoingTeams (Array for the task)  
 completedTeams (Array for the task)  
+points  }]  
 
 
 ### POST /task/getCompleted:
@@ -96,3 +104,26 @@ location
 description  
 ongoingTeams (Array for the task)  
 completedTeams (Array for the task)  
+
+### POST /task/completeTask:
+#### Request:
+teamID  
+type  
+name  
+location  
+
+#### Response: 
+\_id  
+name  
+location  
+description  
+ongoingTeams (Array for the task)  
+completedTeams (Array for the task)  
+
+
+### POST /task/countPoints:
+#### Request:
+teamID  
+
+#### Response: 
+[ { \_id: {}, totalPoints: Number } ]
