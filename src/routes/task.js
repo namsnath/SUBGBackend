@@ -98,6 +98,49 @@ function completeTask(params) {
 				return resolve(params);
 			}
 		);
+
+		/*Task.find({
+			type: params.type,
+			location: params.location,
+			name: params.name,
+			ongoingTeams: params.teamID,
+		}, function(err, doc) {
+			console.log(doc);
+		})*/
+	});
+}
+
+function countCompleted(params) {
+	return new Promise((resolve, reject) => {
+		Task.aggregate([
+			{
+				$match: { completedTeams: params.teamID }	
+			},
+			{
+				$group: {
+					_id: {
+						type: '$type',
+						location: '$location',
+					},
+					count: { $sum: 1 },
+				}
+			},
+			{
+				$project: {
+					count: 1,
+					_id: 0,
+					type: '$_id.type',
+					location: '$_id.location',
+					name: '$name',
+					teamID: params.teamID,
+				}
+			}
+		], function(err, data) {
+			if(err)
+				return reject(err);
+			console.log(data);
+			return resolve(data);
+		});
 	});
 }
 
@@ -163,6 +206,16 @@ router.post('/completeTask', async (req, res, next) => {
 	try {
 		await completeTask(params);
 		res.send(params);
+	} catch(err) {
+		console.log(err);
+	}
+});
+
+router.post('/countCompleted', async (req, res, next) => {
+	var params = req.body;
+	try {
+		var data = await countCompleted(params);
+		res.send(data);
 	} catch(err) {
 		console.log(err);
 	}

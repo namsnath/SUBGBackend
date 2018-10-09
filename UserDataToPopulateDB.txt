@@ -1,1 +1,5 @@
+User:
 [{"registered":false,"name":"Yash Gupta","email":"abc@gmail.com","phone":"321654987","gravitasID":"G18I4321","regNo":"17BME0532"},{"registered":false,"name":"Shovan Singh","email":"bahdhj@gmail.com","phone":"798456123","gravitasID":"G18I4123","regNo":"17BCE0123"},{"registered":false,"name":"Manan Rajvir","email":"jaksdhjdh@gmail.com","phone":"456789123","gravitasID":"G18I4132","regNo":"17BCE0987"},{"registered":false,"name":"Dannel Jacob","email":"bnsmadb@gamil.com","phone":"564123987","gravitasID":"G18I9876","regNo":"17BME0123"},{"registered":false,"name":"Saksham Sethi","email":"ahfs@gamil.com","phone":"564112456","gravitasID":"G18I9986","regNo":"17BCE0987"},{"registered":false,"name":"Namit Nathwani","email":"namsnath@gamil.com","phone":"123456789","gravitasID":"G18I1234","regNo":"17BCI0113"},]
+
+Task:
+[{name:'Task 1',type:2,location:'TT',description:'Task1 doing something',ongoingTeams:[],completedTeams:[],},{name:'Task 2',type:2,location:'TT',description:'Task2 doing something',ongoingTeams:[],completedTeams:[],},]

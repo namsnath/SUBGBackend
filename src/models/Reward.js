@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 var rewardSchema = new mongoose.Schema({
-	location: [String],
+	location: String,
 	type: Number,
 	resources: Number,
 	pollution: Number,
