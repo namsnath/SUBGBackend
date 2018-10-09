@@ -3,6 +3,9 @@ SUBG App Backend
 
 ## This will haunt me in my dreams.
 
+### Type: [1, 2, 3]
+### Location: ['SJT', 'TT', 'SMV', 'GDN']
+
 # Routes:
 
 ## User:
@@ -90,7 +93,8 @@ location
 description  
 ongoingTeams (Array for the task)  
 completedTeams (Array for the task)  
-points  }]  
+points  
+}]  
 
 
 ### POST /task/getCompleted:

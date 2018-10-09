@@ -1,0 +1,58 @@
+[
+	{
+		'name': 'Manisha Dutta',
+		'registered': false,
+		'email': 'abc@gmail.com',
+		'phone': '123456789',
+		'gravitasID': 'G18I0001',
+	},
+	{
+		'name': 'Mansimran Singh Anand',
+		'registered': false,
+		'email': 'bcd@gmail.com',
+		'phone': '234567891',
+		'gravitasID': 'G18I0002',
+	},
+	{
+		'name': 'Saurav Baid',
+		'registered': false,
+		'email': 'cde@gmail.com',
+		'phone': '345678912',
+		'gravitasID': 'G18I0003',
+	},
+	{
+		'name': 'Krityaan Thapar',
+		'registered': false,
+		'email': 'def@gmail.com',
+		'phone': '',
+		'gravitasID': 'G18I0004',
+	},
+	{
+		'name': 'Atul Jatia',
+		'registered': false,
+		'email': 'efg@gmail.com',
+		'phone': '456789123',
+		'gravitasID': 'G18I0005',
+	},
+	{
+		'name': 'Alisha Shah',
+		'registered': false,
+		'email': 'fgh@gmail.com',
+		'phone': '567891234',
+		'gravitasID': 'G18I0006',
+	},
+	{
+		'name': 'Rishab Kaul',
+		'registered': false,
+		'email': 'ghi@gmail.com',
+		'phone': '678912345',
+		'gravitasID': 'G18I0007',
+	},
+	{
+		'name': 'Rajat Gupta',
+		'registered': false,
+		'email': 'hij@gmail.com',
+		'phone': '789123456',
+		'gravitasID': 'G18I0008',
+	},
+]
