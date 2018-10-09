@@ -29,11 +29,11 @@ function findTask(params) {
 					type: params.type,
 					location: params.location, 
 				} },
-				{ $sample: { size: 1 } }
+				{ $sample: { size: parseInt(params.type) } }
 			], function(err, data) {
 				if(err)
 					return reject(err);
-				params.reqTask = data[0];
+				params.reqTask = data;
 				return resolve(params);
 		});
 	});
@@ -42,9 +42,9 @@ function findTask(params) {
 function assignTask(params) {
 	return new Promise((resolve, reject) => {
 		Task.updateOne({
-			type: params.reqTask.type,
-			location: params.reqTask.location,
-			name: params.reqTask.name,
+			type: params.type,
+			location: params.location,
+			name: params.name,
 		}, { $push: { ongoingTeams: params.teamID } }, 
 		function(err, data) {
 			if(err)
@@ -121,11 +121,17 @@ router.post('/assignTask', async (req, res, next) => {
 	
 	try {
 		var data = await findTask(params);
+		//console.log(data);
 		if(data == [])
 			res.send('Task Not Available')
 		else
-			var data2 = await assignTask(data);
-		res.send(data2);
+			data.reqTask.forEach(async (dat) => {
+				dat.teamID = params.teamID;
+				//console.log(dat);
+				var data2 = await assignTask(dat);	
+			});
+			
+		res.send(data);
 	} catch(err) {
 		console.log(err);
 	}
