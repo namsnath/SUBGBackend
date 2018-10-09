@@ -23,6 +23,7 @@ const Code = require(path.join(__dirname, '..', 'models', 'Code'));
 
 function findTask(params) {
 	return new Promise((resolve, reject) => {
+		params.type = parseInt(params.type);
 		Task.aggregate([
 				{ $match: { 
 					ongoingTeams: { $nin: [params.teamID] },
@@ -41,6 +42,7 @@ function findTask(params) {
 
 function assignTask(params) {
 	return new Promise((resolve, reject) => {
+		params.type = parseInt(params.type);
 		Task.updateOne({
 			type: params.type,
 			location: params.location,
@@ -81,6 +83,7 @@ function getCompleted(params) {
 
 function completeTask(params) {
 	return new Promise((resolve, reject) => {
+		params.type = parseInt(params.type);
 		Task.updateOne(
 			{
 				type: params.type,
@@ -143,6 +146,126 @@ function countCompleted(params) {
 		});
 	});
 }
+/*
+function countUnclaimed(params) {
+	return new Promise((resolve, reject) => {
+		Task.aggregate([
+			{
+				$match: { completedTeams: params.teamID, claimedTeams: { $nin: [params.teamID] } },
+			},
+			{
+				$group: {
+					_id: {
+						type: '$type',
+						location: '$location',
+					},
+					count: { $sum: 1 },
+				}
+			},
+			{
+				$project: {
+					count: 1,
+					_id: 0,
+					type: '$_id.type',
+					location: '$_id.location',
+					teamID: params.teamID,
+				}
+			}
+		], function(err, data) {
+			if(err)
+				return reject(err);
+			return resolve(data);
+		});
+	});
+}
+*/
+
+/*function countPoints(params) {
+	return new Promise((resolve, reject) => {
+		Task.aggregate([
+			{
+				$match: { claimedTeams: params.teamID }
+			},
+			{
+				$group: {
+					_id: {},
+					count: { $sum: '$points' }
+				}
+			},
+		], function(err, data) {
+			if(err)
+				return reject(err);
+			return resolve(data);
+		});
+	});
+}*/
+
+function newCountPoints(params) {
+	return new Promise((resolve, reject) => {
+		Task.aggregate([
+			{
+				$match: { completedTeams: params.teamID }
+			},
+			{
+				$group: {
+					_id: {
+						type: '$type',
+						location: '$location',
+						points: '$points'
+					},
+					count: { $sum: 1 },
+				}
+			},
+			{
+				$project: {
+					setCount: { $divide: [ '$count', '$_id.type' ] },
+				}
+			},
+			{
+				$project: {
+					total: { $multiply: [ '$setCount', '$_id.points' ] },
+				}
+			},
+			{
+				$group: {
+					_id: {},
+					totalPoints: { $sum: '$total' }
+				}
+			}
+		], function(err, data) {
+			if(err)
+				return reject(err);
+			return resolve(data);
+		});
+	});
+}
+/*
+function updateClaimed(params) {
+	return new Promise(async (resolve, reject) => {
+		var completed = await countCompleted(params);
+		console.log('Completed: ', completed);
+		var completedCount;
+		var unclaimed = await countUnclaimed(params);
+		console.log('Unclaimed', unclaimed);
+		var unclaimedCount;
+
+		if(completed.length == 0)
+			completedCount = 0;
+		else
+			completedCount = completed[0].count
+
+		if(unclaimed.length == 0)
+			unclaimedCount = 0;
+		else
+			unclaimedCount = unclaimed[0].count
+
+		var diff = completedCount - unclaimedCount;
+		console.log(diff);
+
+		//if(diff == )
+		return resolve(diff);
+	});
+}*/
 
 /*
 *	Ayush was here
@@ -220,5 +343,45 @@ router.post('/countCompleted', async (req, res, next) => {
 		console.log(err);
 	}
 });
+/*
+router.post('/countUnclaimed', async (req, res, next) => {
+	var params = req.body;
+	try {
+		var data = await countUnclaimed(params);
+		res.send(data);
+	} catch(err) {
+		console.log(err);
+	}
+});*/
+/*
+router.post('/countPoints', async (req, res, next) => {
+	var params = req.body;
+	try {
+		var data = await countPoints(params);
+		res.send(data);
+	} catch(err) {
+		console.log(err);
+	}
+});
+*/
+router.post('/countPoints', async (req, res, next) => {
+	var params = req.body;
+	try {
+		var data = await newCountPoints(params);
+		res.send(data);
+	} catch(err) {
+		console.log(err);
+	}
+});
 
+/*
+router.post('/updateClaimed', async (req, res, next) => {
+	var params = req.body;
+	try {
+		var data = await updateClaimed(params);
+		res.send(data.toString());
+	} catch(err) {
+		console.log(err);
+	} 
+});*/
 module.exports = router;
