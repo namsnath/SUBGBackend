@@ -89,6 +89,26 @@ function getOngoing(params) {
 	});
 }
 
+function getSpecificOngoing(params) {
+	return new Promise((resolve, reject) => {
+		console.log(params);
+		params.type = parseInt(params.type);
+		Task.aggregate([
+			{ 
+				$match: { 
+					ongoingTeams: params.teamID,
+					location: params.location,
+					type: params.type, 
+				} 
+			}
+		], function(err, data) {
+			if(err)
+				return reject(err);
+			return resolve(data);
+		});
+	});
+}
+
 function getCompleted(params) {
 	return new Promise((resolve, reject) => {
 		Task.aggregate([
@@ -328,6 +348,16 @@ router.post('/getOngoing', async (req, res, next) => {
 	var params = req.body;
 	try {
 		var data = await getOngoing(params);
+		res.send(data);
+	} catch(err) {
+		console.log(err);
+	}
+});
+
+router.post('/getSpecificOngoing', async (req, res, next) => {
+	var params = req.body;
+	try {
+		var data = await getSpecificOngoing(params);
 		res.send(data);
 	} catch(err) {
 		console.log(err);
