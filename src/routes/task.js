@@ -20,6 +20,26 @@ const Task = require(path.join(__dirname, '..', 'models', 'Task'));
 const Code = require(path.join(__dirname, '..', 'models', 'Code'));
 
 
+function getAllOngoing() {
+	return new Promise((resolve, reject) => {
+		Task.aggregate([
+			{ 
+				$project: {
+					_id: true,
+					ongoingTeams: true,
+					name: true,
+					description: true,
+					location: true,
+					type: true,
+				}
+			},
+		], function(err, data) {
+			if(err)
+				return reject(err);
+			return resolve(data);
+		});
+	});
+}
 
 function findTask(params) {
 	return new Promise((resolve, reject) => {
@@ -373,6 +393,15 @@ router.post('/countPoints', async (req, res, next) => {
 		console.log(err);
 	}
 });
+
+router.get('/getAllOngoing', async (req, res, next) => {
+	try {
+		var data = await getAllOngoing();
+		res.send(data);
+	} catch (err) {
+		console.log(err);
+	}
+})
 
 /*
 router.post('/updateClaimed', async (req, res, next) => {

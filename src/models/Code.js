@@ -5,6 +5,8 @@ var codeSchema = new mongoose.Schema({
 	type: String,	//Classic, War
 	link: String,	//The URL to challenge
 	description: String,
+	ongoingTeams: [String],
+	
 });
 
 module.exports = mongoose.model("Code", codeSchema);

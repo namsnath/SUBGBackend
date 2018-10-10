@@ -28,6 +28,12 @@ const team = require(path.join(__dirname, 'routes', 'team'));
 const task = require(path.join(__dirname, 'routes', 'task'));
 
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // Routes
 app.use('/user', user);
 app.use('/team', team);
