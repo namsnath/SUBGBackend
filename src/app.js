@@ -71,3 +71,33 @@ app.get('/roundData', async(req, res, next) => {
 		res.send(data[0]);
 	});
 });
+
+function teamRemove() {
+	return new Promise((resolve, reject) => {
+		Team.deleteMany({}, function(err, resp) {
+			if(err)
+				return reject(err);
+			return resolve(resp);
+		});
+	});
+}
+
+function userUnregister() {
+	return new Promise((resolve, reject) => {
+		User.update({registered: true}, {registered: false}, {multi: true}, function(err, doc) {
+			if(err)
+				return reject(err);
+			return resolve(doc);
+		})
+	});
+}
+
+app.post('/unregister', async(req, res, next) => {
+	try {
+		await userUnregister();
+		await teamRemove();
+		res.send('Done');
+	} catch(err) {
+		res.send(err);
+	}
+})

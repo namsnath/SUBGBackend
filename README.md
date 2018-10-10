@@ -8,6 +8,11 @@ SUBG App Backend
 
 # Routes:
 
+### GET /roundData:
+#### Response:
+round1 (Boolean)
+round2 (Boolean)
+
 ## User:
 
 ### GET /user/getNotRegistered:
