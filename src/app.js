@@ -20,6 +20,7 @@ const TeamReward = require(path.join(__dirname, 'models', 'TeamReward'));
 const TeamTask = require(path.join(__dirname, 'models', 'TeamTask'));
 const Task = require(path.join(__dirname, 'models', 'Task'));
 const Code = require(path.join(__dirname, 'models', 'Code'));
+const Round = require(path.join(__dirname, 'models', 'Round'));
 
 
 // Route Init
@@ -48,7 +49,6 @@ db.once('open', function() {
   console.log("Connected to MongoDB Instance");
 });
 
-
 //Error Handler
 app.use(function (err, req, res, next) {
   	if(err.status = 400)
@@ -62,4 +62,12 @@ app.use(function (err, req, res, next) {
 
 app.listen(port, () => {
 	console.log("Server listening on port " + port)
+});
+
+app.get('/roundData', async(req, res, next) => {
+	Round.find({}, function(err, data) {
+		if(err)
+			res.send(err);
+		res.send(data[0]);
+	});
 });
