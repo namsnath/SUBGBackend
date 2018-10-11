@@ -92,10 +92,21 @@ function userUnregister() {
 	});
 }
 
+function taskClear() {
+	return new Promise((resolve, reject) => {
+		Task.update({}, {ongoingTeams: [], completedTeams: []}, {multi: true}, function(err, doc) {
+			if(err)
+				return reject(err);
+			return resolve(doc);
+		})
+	});
+}
+
 app.post('/unregister', async(req, res, next) => {
 	try {
 		await userUnregister();
 		await teamRemove();
+		await taskClear();
 		res.send('Done');
 	} catch(err) {
 		res.send(err);

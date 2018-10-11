@@ -258,18 +258,24 @@ function newCountPoints(params) {
 			},
 			{
 				$project: {
+					count: true,
 					setCount: { $divide: [ '$count', '$_id.type' ] },
 				}
 			},
 			{
 				$project: {
-					total: { $multiply: [ '$setCount', '$_id.points' ] },
+					count: true,
+					setCount: true,
+					total: { $multiply: [ {$floor: '$setCount'}, '$_id.points', '$_id.type' ] },
 				}
 			},
 			{
 				$group: {
-					_id: {},
-					totalPoints: { $sum: '$total' }
+					_id: {count: '$count',
+					setCount: '$setCount',
+					total: '$total',},
+					totalPoints: { $sum: '$total' },
+
 				}
 			}
 		], function(err, data) {
