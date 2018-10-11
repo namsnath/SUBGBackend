@@ -47,6 +47,7 @@ function findTask(params) {
 		Task.aggregate([
 				{ $match: { 
 					ongoingTeams: { $nin: [params.teamID] },
+					completedTeams: { $nin: [params.teamID] },
 					type: params.type,
 					location: params.location, 
 				} },
