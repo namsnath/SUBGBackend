@@ -272,9 +272,9 @@ function newCountPoints(params) {
 			},
 			{
 				$group: {
-					_id: {count: '$count',
+					_id: {/*count: '$count',
 					setCount: '$setCount',
-					total: '$total',},
+					total: '$total',*/},
 					totalPoints: { $sum: '$total' },
 
 				}
