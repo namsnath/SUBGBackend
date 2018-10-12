@@ -29,6 +29,7 @@ const team = require(path.join(__dirname, 'routes', 'team'));
 const task = require(path.join(__dirname, 'routes', 'task'));
 
 
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -111,4 +112,8 @@ app.post('/unregister', async(req, res, next) => {
 	} catch(err) {
 		res.send(err);
 	}
-})
+});
+
+app.get('/', async(req, res, next) => {
+	return res.sendFile(path.join(__dirname,'..','..','SUBGFrontendCSI',"index.html"));
+});
