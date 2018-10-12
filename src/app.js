@@ -114,6 +114,16 @@ app.post('/unregister', async(req, res, next) => {
 	}
 });
 
+app.post('/addAll', async (req, res, next) => {
+	var params = req.body;
+	console.log(req.body);
+	await User.deleteMany({});
+	User.insertMany(params, function(err, data) {
+		console.log(err);
+		res.send('Done');
+	});
+});
+
 app.get('/', async(req, res, next) => {
 	return res.sendFile(path.join(__dirname,'..','..','SUBGFrontendCSI',"index.html"));
 });
