@@ -124,6 +124,76 @@ app.post('/addAll', async (req, res, next) => {
 	});
 });
 
+function doGetPointsAggregate(doc) {
+	return new Promise((resolve, reject) => {
+		console.log(doc);
+		Task.aggregate([
+			{
+				$group: { _id: { completedTeams: doc._id } }
+			},
+			{
+				$group: {
+					_id: {
+						type: '$type',
+						location: '$location',
+						points: '$points'
+					},
+					count: { $sum: 1 },
+				}
+			},
+			{
+				$project: {
+					count: true,
+					setCount: { $divide: [ '$count', '$_id.type' ] },
+				}
+			},
+			{
+				$project: {
+					count: true,
+					setCount: true,
+					total: { $multiply: [ {$floor: '$setCount'}, '$_id.points', '$_id.type' ] },
+				}
+			},
+			{
+				$group: {
+					_id: {},
+					totalPoints: { $sum: '$total' },
+				}
+			},
+			{
+				$project: {
+					team: doc._id,
+					totalPoints: true
+				}
+			}
+		], function(err, data) {
+			if(err)
+				console.log(err);
+			var id = data[0].team;
+			return resolve(data[0].totalPoints);
+		});
+	});
+}
+
+app.get('/getAllPoints', async (req, res, next) => {
+	var dat = {};
+
+	Team.find({}, function(err, docs) {
+		if(err)
+			console.log(err);
+		else {
+			docs.forEach(async (doc) => {
+				//console.log(doc._id);
+				//console.log(await doGetPointsAggregate(doc));
+				dat[doc._id.toString()] = await doGetPointsAggregate(doc);
+				console.log(dat);
+			});
+		}
+	});
+	
+		
+});
+
 app.get('/', async(req, res, next) => {
 	return res.sendFile(path.join(__dirname,'..','..','SUBGFrontendCSI',"index.html"));
 });
